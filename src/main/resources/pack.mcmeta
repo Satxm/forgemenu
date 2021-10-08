@@ -1,0 +1,7 @@
+{
+    "pack": {
+        "description": "Forge Mod Button Added",
+        "pack_format": 7,
+        "_comment": "Add a Forge Mod Button in Game Menu."
+    }
+}

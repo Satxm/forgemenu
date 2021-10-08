@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="${loader_version}"
+license="Apache License 2.0"
+issueTrackerURL="https://github.com/Satxm/forgemenu"
+
+[[mods]]
+modId="modsetting"
+version="${version}"
+displayName="Forge Mod Button Added"
+displayURL="https://github.com/Satxm/forgemenu"
+logoFile="icon.png"
+authors="Satxm"
+description="Add a Forge Mod Button in Game Menu."
+
+[[dependencies.modsetting]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version}"
+    ordering="NONE"
+    side="CLIENT"
+
+[[dependencies.modsetting]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${mc_version}"
+    ordering="NONE"
+    side="CLIENT"

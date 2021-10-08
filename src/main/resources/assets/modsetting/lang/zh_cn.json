@@ -1,0 +1,5 @@
+{
+	"gui.EnableModButton": "在游戏菜单中显示模组按钮",
+	"gui.SingleLineButton": "模组按钮单独一行",
+	"fml.menu.mods": "模组"
+}

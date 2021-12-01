@@ -25,7 +25,9 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
+import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.gui.ModListScreen;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -35,8 +37,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fmlclient.ConfigGuiHandler.ConfigGuiFactory;
-import net.minecraftforge.fmlclient.gui.screen.ModListScreen;
 
 @Mod(ModSetting.MODID)
 public class ModSetting {
@@ -60,15 +60,15 @@ public class ModSetting {
 	}
 
 	@SubscribeEvent
-	public void ChangeButton(GuiScreenEvent.InitGuiEvent.Post event) {
-		Screen screen = event.getGui();
+	public void ChangeButton(ScreenEvent.InitScreenEvent.Post event) {
+		Screen screen = event.getScreen();
 		Minecraft client = Minecraft.getInstance();
 		Config cfg = configMap.get(client);
 		if (cfg.EnableModButton) {
-			if (screen instanceof PauseScreen && event.getWidgetList().size() != 0) {
+			if (screen instanceof PauseScreen && event.getListenersList().size() != 0) {
 				if (cfg.SingleLineButton) {
-					for (int k = 0; k < event.getWidgetList().size(); k++) {
-						Button OldButton = (Button) event.getWidgetList().get(k);
+					for (int k = 0; k < event.getListenersList().size(); k++) {
+						Button OldButton = (Button) event.getListenersList().get(k);
 						if (OldButton.y >= screen.height / 4 + 96 + -16) {
 							OldButton.y += 24;
 						}
@@ -76,10 +76,10 @@ public class ModSetting {
 					Button ModScreenButton = new Button(screen.width / 2 - 102, screen.height / 4 + 96 + -16, 204, 20,
 							new TranslatableComponent("fml.menu.mods"),
 							(button) -> client.setScreen(new ModListScreen(screen)));
-					event.addWidget(ModScreenButton);
+					event.addListener(ModScreenButton);
 				} else {
-					for (int k = 0; k < event.getWidgetList().size(); k++) {
-						Button OldButton = (Button) event.getWidgetList().get(k);
+					for (int k = 0; k < event.getListenersList().size(); k++) {
+						Button OldButton = (Button) event.getListenersList().get(k);
 						if (OldButton.getMessage().getString()
 								.equals(new TranslatableComponent("menu.reportBugs").getString())) {
 							int x = OldButton.x;
@@ -88,8 +88,8 @@ public class ModSetting {
 							int h = OldButton.getHeight();
 							Button ModScreenButton = new Button(x, y, w, h, new TranslatableComponent("fml.menu.mods"),
 									(button) -> client.setScreen(new ModListScreen(screen)));
-							event.removeWidget(OldButton);
-							event.addWidget(ModScreenButton);
+							event.removeListener(OldButton);
+							event.addListener(ModScreenButton);
 						}
 					}
 				}
@@ -114,7 +114,7 @@ public class ModSetting {
 
 	private void setup(final FMLCommonSetupEvent event) {
 		Minecraft client = Minecraft.getInstance();
-		Path location = FMLPaths.CONFIGDIR.get().resolve("modOldButton.json");
+		Path location = FMLPaths.CONFIGDIR.get().resolve("ForgeModButton.json");
 		ModSetting.Config cfg;
 		try {
 			cfg = gson.fromJson(new String(Files.readAllBytes(location)), ModSetting.Config.class);
@@ -142,8 +142,7 @@ public class ModSetting {
 
 	private static String toPrettyFormat(Object src) {
 		String json = gson.toJson(src);
-		JsonParser jsonParser = new JsonParser();
-		JsonObject jsonObject = jsonParser.parse(json).getAsJsonObject();
+		JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(jsonObject);
 	}

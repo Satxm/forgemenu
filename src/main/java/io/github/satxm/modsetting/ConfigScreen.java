@@ -7,14 +7,14 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 public class ConfigScreen extends Screen {
 	private final ModSetting.Config cfg;
 	private final Screen lastScreen;
 
 	public ConfigScreen(Screen screen) {
-		super(new TranslatableComponent("options.title"));
+		super(Component.translatable("options.title"));
 		this.lastScreen = screen;
 		Minecraft client = Minecraft.getInstance();
 		this.cfg = ModSetting.getConfig(client);
@@ -30,13 +30,13 @@ public class ConfigScreen extends Screen {
 
 		this.addRenderableWidget(
 				CycleButton.onOffBuilder(cfg.EnableModButton).create(this.width / 2 - 102, this.height / 2 - 12, 204,
-						20, new TranslatableComponent("gui.EnableModButton"), (button, EnableModButton) -> {
+						20, Component.translatable("gui.EnableModButton"), (button, EnableModButton) -> {
 							cfg.EnableModButton = EnableModButton;
 						}));
 
 		this.addRenderableWidget(
 				CycleButton.onOffBuilder(cfg.SingleLineButton).create(this.width / 2 - 102, this.height / 2 + 12, 204,
-						20, new TranslatableComponent("gui.SingleLineButton"), (button, SingleLineButton) -> {
+						20, Component.translatable("gui.SingleLineButton"), (button, SingleLineButton) -> {
 							cfg.SingleLineButton = SingleLineButton;
 						}));
 	}

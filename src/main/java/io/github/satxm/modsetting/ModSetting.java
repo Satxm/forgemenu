@@ -22,7 +22,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
@@ -74,19 +74,19 @@ public class ModSetting {
 						}
 					}
 					Button ModScreenButton = new Button(screen.width / 2 - 102, screen.height / 4 + 96 + -16, 204, 20,
-							new TranslatableComponent("fml.menu.mods"),
+							Component.translatable("fml.menu.mods"),
 							(button) -> client.setScreen(new ModListScreen(screen)));
 					event.addListener(ModScreenButton);
 				} else {
 					for (int k = 0; k < event.getListenersList().size(); k++) {
 						Button OldButton = (Button) event.getListenersList().get(k);
 						if (OldButton.getMessage().getString()
-								.equals(new TranslatableComponent("menu.reportBugs").getString())) {
+								.equals(Component.translatable("menu.reportBugs").getString())) {
 							int x = OldButton.x;
 							int y = OldButton.y;
 							int w = OldButton.getWidth();
 							int h = OldButton.getHeight();
-							Button ModScreenButton = new Button(x, y, w, h, new TranslatableComponent("fml.menu.mods"),
+							Button ModScreenButton = new Button(x, y, w, h, Component.translatable("fml.menu.mods"),
 									(button) -> client.setScreen(new ModListScreen(screen)));
 							event.removeListener(OldButton);
 							event.addListener(ModScreenButton);
